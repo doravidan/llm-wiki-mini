@@ -15,7 +15,33 @@ Raw context is strong for one-off questions. LLM Wiki Mini is designed for repea
 - blind A/B validation against raw-context answers
 - critical judge reports that flag weak grounding, verbosity, and junk artifacts
 
-## Install
+## Agent-first usage: no end-user install
+
+This project is meant to be used by AI agents on behalf of end users. The human should be able to say: "Use LLM Wiki Mini before implementing this," and the agent can clone this repo, run it from source, and create local wiki artifacts in the target project.
+
+Copy/paste prompt for an agent:
+
+```text
+Use LLM Wiki Mini to understand this repository before implementing the task. Do not ask me to install anything. Clone or reuse https://github.com/doravidan/llm-wiki-mini in your own tools/cache area, run it from source with PYTHONPATH, create a local .llm-wiki/ folder, ingest relevant architecture/code/test files, then answer and implement using source-backed evidence.
+```
+
+No-install command pattern for agents:
+
+```bash
+export LLM_WIKI_MINI_REPO=/path/to/cloned/llm-wiki-mini
+export TARGET_PROJECT=/path/to/user/project
+export WIKI_DIR="$TARGET_PROJECT/.llm-wiki"
+
+PYTHONPATH="$LLM_WIKI_MINI_REPO" python -m llm_wiki_mini.cli init "$WIKI_DIR"
+PYTHONPATH="$LLM_WIKI_MINI_REPO" python -m llm_wiki_mini.cli ingest "$WIKI_DIR" "$TARGET_PROJECT/README.md" --title README.md
+PYTHONPATH="$LLM_WIKI_MINI_REPO" python -m llm_wiki_mini.cli ask "$WIKI_DIR" "What files matter for this implementation task?"
+```
+
+See `AGENTS.md` and `docs/AGENT_USAGE.md` for the full agent contract.
+
+## Optional developer install
+
+Installation is optional and mainly for developers working on this package directly.
 
 From this repository:
 
@@ -109,7 +135,7 @@ These are deterministic and rubric-based results, not a substitute for final hum
 
 - `pyproject.toml` defines package metadata, console script, pytest config, and optional dev tooling.
 - `.gitignore` excludes generated eval runs, caches, build artifacts, virtualenvs, and local env files.
-- GitHub Actions CI runs tests on Python 3.10, 3.11, and 3.12.
+- GitHub Actions CI runs tests on Python 3.11 and 3.12.
 - No runtime network calls or external API keys are required by the core package.
 
 ## Project layout
