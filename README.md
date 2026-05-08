@@ -2,6 +2,8 @@
 
 Local-first markdown knowledge compiler inspired by Karpathy-style LLM wiki workflows.
 
+![LLM Wiki Mini turns raw repository chaos into agent-ready wiki memory](assets/llm-wiki-mini-flow.jpg)
+
 The project ingests source files into a small auditable markdown wiki, answers questions from raw source evidence plus generated wiki artifacts, and includes a serious validation harness that compares wiki answers against raw-context baselines on real software-project cases.
 
 ## Why this exists
